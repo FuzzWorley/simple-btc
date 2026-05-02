@@ -1,6 +1,7 @@
 package com.bitcoinportfolio.ui.auth
 
-import androidx.compose.ui.test.assertExists
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertDoesNotExist
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -52,9 +53,9 @@ class AuthScreenTest {
         }
 
         listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0").forEach { digit ->
-            composeRule.onNodeWithContentDescription("Digit $digit").assertExists()
+            composeRule.onNodeWithContentDescription("Digit $digit").assertIsDisplayed()
         }
-        composeRule.onNodeWithContentDescription("Backspace").assertExists()
+        composeRule.onNodeWithContentDescription("Backspace").assertIsDisplayed()
     }
 
     @Test
@@ -67,11 +68,11 @@ class AuthScreenTest {
 
         composeRule.onNodeWithContentDescription("Digit 1").performClick()
         composeRule.waitForIdle()
-        composeRule.onNodeWithContentDescription("PIN indicator 1").assertExists()
+        composeRule.onNodeWithContentDescription("PIN indicator 1").assertIsDisplayed()
 
         composeRule.onNodeWithContentDescription("Digit 2").performClick()
         composeRule.waitForIdle()
-        composeRule.onNodeWithContentDescription("PIN indicator 2").assertExists()
+        composeRule.onNodeWithContentDescription("PIN indicator 2").assertIsDisplayed()
     }
 
     @Test
@@ -89,7 +90,7 @@ class AuthScreenTest {
         composeRule.onNodeWithContentDescription("Backspace").performClick()
         composeRule.waitForIdle()
 
-        composeRule.onNodeWithContentDescription("PIN indicator 1").assertExists()
+        composeRule.onNodeWithContentDescription("PIN indicator 1").assertIsDisplayed()
     }
 
     @Test
@@ -150,6 +151,6 @@ class AuthScreenTest {
             }
         }
 
-        composeRule.onNodeWithText("Enter PIN").assertExists()
+        composeRule.onNodeWithText("Enter PIN").assertIsDisplayed()
     }
 }

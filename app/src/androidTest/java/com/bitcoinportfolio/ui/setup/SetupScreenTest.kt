@@ -1,5 +1,6 @@
 package com.bitcoinportfolio.ui.setup
 
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -89,7 +90,7 @@ class SetupScreenTest {
         viewModel.onConfirmPinChanged("5678")
 
         composeRule.waitForIdle()
-        composeRule.onNodeWithText("PINs do not match").assertExists()
+        composeRule.onNodeWithText("PINs do not match").assertIsDisplayed()
     }
 
     @Test
