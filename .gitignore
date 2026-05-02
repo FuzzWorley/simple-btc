@@ -8,4 +8,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# internal documentation notes
 docs/
+
+# App build outputs and generated sources
+/app/build/
