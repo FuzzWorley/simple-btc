@@ -1,12 +1,7 @@
 package com.bitcoinportfolio.ui.setup
 
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import com.bitcoinportfolio.domain.usecase.SetupPortfolioUseCase
 import com.bitcoinportfolio.ui.theme.BitcoinPortfolioTheme
 import io.mockk.every
