@@ -16,6 +16,7 @@
     <string name="auth_biometric_title">Bitcoin Portfolio</string>
     <string name="auth_biometric_subtitle">Confirm your identity</string>
     <string name="auth_biometric_negative">Use PIN</string>
+    <string name="auth_use_biometric">Use Biometric</string>
 
     <!-- Portfolio screen -->
     <string name="portfolio_title">₿ Portfolio</string>

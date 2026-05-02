@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.bitcoinportfolio.ui.auth.AuthScreen
 import com.bitcoinportfolio.ui.setup.SetupScreen
 
 @Composable
@@ -33,7 +34,13 @@ fun NavGraph(startDestination: String = Screen.Setup.route) {
             )
         }
         composable(Screen.Auth.route) {
-            PlaceholderScreen("Auth")
+            AuthScreen(
+                onAuthResult = { isAuthenticated ->
+                    navController.navigate(Screen.Portfolio.createRoute(isAuthenticated)) {
+                        popUpTo(Screen.Auth.route) { inclusive = true }
+                    }
+                }
+            )
         }
         composable(
             route = Screen.Portfolio.route,

@@ -2,9 +2,9 @@ package com.bitcoinportfolio
 
 import android.os.Bundle
 import android.view.WindowManager
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.fragment.app.FragmentActivity
 import com.bitcoinportfolio.data.secure.SecureStorage
 import com.bitcoinportfolio.navigation.NavGraph
 import com.bitcoinportfolio.navigation.Screen
@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     @Inject lateinit var secureStorage: SecureStorage
 
