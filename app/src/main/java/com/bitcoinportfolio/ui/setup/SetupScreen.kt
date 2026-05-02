@@ -2,6 +2,8 @@ package com.bitcoinportfolio.ui.setup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -160,6 +165,7 @@ private fun PinDotField(
 ) {
     val borderColor = if (isError) MaterialTheme.colorScheme.error
                       else MaterialTheme.colorScheme.outline
+    val focusRequester = remember { FocusRequester() }
 
     Column(modifier = modifier) {
         Text(
@@ -175,6 +181,10 @@ private fun PinDotField(
                 .clip(RoundedCornerShape(8.dp))
                 .background(SurfaceCard)
                 .border(1.dp, borderColor, RoundedCornerShape(8.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) { focusRequester.requestFocus() }
                 .semantics { contentDescription = label }
         ) {
             Row(
@@ -208,6 +218,7 @@ private fun PinDotField(
                 modifier = Modifier
                     .matchParentSize()
                     .alpha(0f)
+                    .focusRequester(focusRequester)
             ) { /* no decoration — dots row is the visual */ }
         }
 
