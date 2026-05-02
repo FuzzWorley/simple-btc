@@ -13,17 +13,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.bitcoinportfolio.ui.setup.SetupScreen
 
 @Composable
-fun NavGraph() {
+fun NavGraph(startDestination: String = Screen.Setup.route) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Setup.route
+        startDestination = startDestination
     ) {
         composable(Screen.Setup.route) {
-            PlaceholderScreen("Setup")
+            SetupScreen(
+                onSetupComplete = {
+                    navController.navigate(Screen.Auth.route) {
+                        popUpTo(Screen.Setup.route) { inclusive = true }
+                    }
+                }
+            )
         }
         composable(Screen.Auth.route) {
             PlaceholderScreen("Auth")
