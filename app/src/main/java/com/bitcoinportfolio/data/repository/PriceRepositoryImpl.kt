@@ -18,6 +18,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -38,13 +39,22 @@ class PriceRepositoryImpl @Inject constructor(
         private const val STALE_HISTORY_MS = 24 * 60 * 60 * 1000L
         const val SYMBOL_BTC_USD = "BTC_USD"
         const val SYMBOL_XAU_USD = "XAU_USD"
+        // Used when no live or cached gold price is available (metals.live is down).
+        // XAU values will be approximate until a working gold API is wired up.
+        private const val FALLBACK_XAU_USD_PER_OZ = 3200.0
     }
 
     override fun observeCurrentPrice(): Flow<DataResult<BitcoinPrice>> = channelFlow {
         send(DataResult.Loading)
 
         launch {
-            try { refreshCurrentPrice() } catch (_: Exception) { }
+            try {
+                refreshCurrentPrice()
+            } catch (_: Exception) { }
+            // Check after refresh attempt — whether it threw OR silently bailed with no write.
+            if (dao.observeCurrentPrice().first() == null) {
+                send(DataResult.Error("Unable to load price data. Check your connection."))
+            }
         }
 
         dao.observeCurrentPrice().collect { entity ->
@@ -98,10 +108,16 @@ class PriceRepositoryImpl @Inject constructor(
     override suspend fun refreshCurrentPrice() = coroutineScope {
         val btcDeferred = async { coinGeckoService.getCurrentPrice() }
         val xauDeferred = async {
-            metalsLiveService.getSpotPrices().firstOrNull()?.gold
+            try {
+                metalsLiveService.getSpotPrices().firstOrNull()?.gold
+            } catch (_: Exception) {
+                null
+            }
         }
         val btcUsd = btcDeferred.await().bitcoin.usd
-        val xauUsd = xauDeferred.await() ?: return@coroutineScope
+        val xauUsd = xauDeferred.await()
+            ?: dao.observeCurrentPrice().first()?.xauUsd
+            ?: FALLBACK_XAU_USD_PER_OZ
         dao.upsertCurrentPrice(
             CurrentPriceEntity(
                 btcUsd = btcUsd,
