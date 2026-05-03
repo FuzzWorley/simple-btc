@@ -25,6 +25,8 @@ class AuthUseCase @Inject constructor(
     }
 
     fun getRealAmount(): Double = secureStorage.getBtcAmount() ?: 0.0
+
+    fun reset() = secureStorage.clearAll()
 }
 
 sealed class AuthResult {

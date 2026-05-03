@@ -43,6 +43,7 @@ import com.bitcoinportfolio.ui.theme.TextSecondary
 @Composable
 fun AuthScreen(
     onAuthResult: (isAuthenticated: Boolean) -> Unit,
+    onReset: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -89,6 +90,10 @@ fun AuthScreen(
         uiState.authResult?.let { outcome ->
             onAuthResult(outcome is AuthOutcome.Authenticated)
         }
+    }
+
+    LaunchedEffect(uiState.resetComplete) {
+        if (uiState.resetComplete) onReset()
     }
 
     Column(
@@ -143,6 +148,14 @@ fun AuthScreen(
             ) {
                 Text(text = useBiometricLabel, color = BitcoinOrange)
             }
+        }
+
+        Spacer(Modifier.height(24.dp))
+        TextButton(
+            onClick = viewModel::onReset,
+            modifier = Modifier.semantics { contentDescription = "Reset wallet" }
+        ) {
+            Text(text = "Reset", color = MaterialTheme.colorScheme.error)
         }
     }
 }

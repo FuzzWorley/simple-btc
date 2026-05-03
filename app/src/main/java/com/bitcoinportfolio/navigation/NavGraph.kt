@@ -39,6 +39,11 @@ fun NavGraph(startDestination: String = Screen.Setup.route) {
                     navController.navigate(Screen.Portfolio.createRoute(isAuthenticated)) {
                         popUpTo(Screen.Auth.route) { inclusive = true }
                     }
+                },
+                onReset = {
+                    navController.navigate(Screen.Setup.route) {
+                        popUpTo(Screen.Auth.route) { inclusive = true }
+                    }
                 }
             )
         }

@@ -60,6 +60,11 @@ class AuthViewModel @Inject constructor(
         // fall back to PIN silently — no state change needed
     }
 
+    fun onReset() {
+        authUseCase.reset()
+        _uiState.update { it.copy(resetComplete = true) }
+    }
+
     private fun submitPin(pin: String) {
         when (authUseCase.authenticateWithPin(pin)) {
             is AuthResult.Success -> _uiState.update { it.copy(authResult = AuthOutcome.Authenticated) }
@@ -82,6 +87,7 @@ data class AuthUiState(
     val isShaking: Boolean = false,
     val biometricAvailable: Boolean = false,
     val authResult: AuthOutcome? = null,
+    val resetComplete: Boolean = false,
 )
 
 sealed class AuthOutcome {

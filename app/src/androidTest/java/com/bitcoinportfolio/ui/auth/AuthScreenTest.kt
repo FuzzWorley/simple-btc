@@ -44,7 +44,7 @@ class AuthScreenTest {
     fun numpad_renders_all_digit_keys() {
         composeRule.setContent {
             BitcoinPortfolioTheme {
-                AuthScreen(onAuthResult = {}, viewModel = viewModel)
+                AuthScreen(onAuthResult = {}, onReset = {}, viewModel = viewModel)
             }
         }
 
@@ -58,7 +58,7 @@ class AuthScreenTest {
     fun tapping_digit_updates_pin_indicator() {
         composeRule.setContent {
             BitcoinPortfolioTheme {
-                AuthScreen(onAuthResult = {}, viewModel = viewModel)
+                AuthScreen(onAuthResult = {}, onReset = {}, viewModel = viewModel)
             }
         }
 
@@ -75,7 +75,7 @@ class AuthScreenTest {
     fun backspace_removes_last_digit() {
         composeRule.setContent {
             BitcoinPortfolioTheme {
-                AuthScreen(onAuthResult = {}, viewModel = viewModel)
+                AuthScreen(onAuthResult = {}, onReset = {}, viewModel = viewModel)
             }
         }
 
@@ -94,7 +94,7 @@ class AuthScreenTest {
         var authResult: Boolean? = null
         composeRule.setContent {
             BitcoinPortfolioTheme {
-                AuthScreen(onAuthResult = { authResult = it }, viewModel = viewModel)
+                AuthScreen(onAuthResult = { authResult = it }, onReset = {}, viewModel = viewModel)
             }
         }
 
@@ -112,7 +112,7 @@ class AuthScreenTest {
         var authResult: Boolean? = null
         composeRule.setContent {
             BitcoinPortfolioTheme {
-                AuthScreen(onAuthResult = { authResult = it }, viewModel = viewModel)
+                AuthScreen(onAuthResult = { authResult = it }, onReset = {}, viewModel = viewModel)
             }
         }
 
@@ -132,7 +132,7 @@ class AuthScreenTest {
         // On most emulators biometric hardware is unavailable, so the button should not appear
         composeRule.setContent {
             BitcoinPortfolioTheme {
-                AuthScreen(onAuthResult = {}, viewModel = viewModel)
+                AuthScreen(onAuthResult = {}, onReset = {}, viewModel = viewModel)
             }
         }
 
@@ -143,7 +143,7 @@ class AuthScreenTest {
     fun enter_pin_label_is_shown() {
         composeRule.setContent {
             BitcoinPortfolioTheme {
-                AuthScreen(onAuthResult = {}, viewModel = viewModel)
+                AuthScreen(onAuthResult = {}, onReset = {}, viewModel = viewModel)
             }
         }
 

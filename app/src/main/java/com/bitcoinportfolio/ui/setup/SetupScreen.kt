@@ -32,12 +32,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -163,8 +167,13 @@ private fun PinDotField(
     isError: Boolean = false,
     errorText: String? = null
 ) {
-    val borderColor = if (isError) MaterialTheme.colorScheme.error
-                      else MaterialTheme.colorScheme.outline
+    var isFocused by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val borderColor = when {
+        isError -> MaterialTheme.colorScheme.error
+        isFocused -> BitcoinOrange
+        else -> MaterialTheme.colorScheme.outline
+    }
     val focusRequester = remember { FocusRequester() }
 
     Column(modifier = modifier) {
@@ -219,6 +228,10 @@ private fun PinDotField(
                     .matchParentSize()
                     .alpha(0f)
                     .focusRequester(focusRequester)
+                    .onFocusChanged { state ->
+                        isFocused = state.isFocused
+                        if (state.isFocused) keyboardController?.show()
+                    }
             ) { /* no decoration — dots row is the visual */ }
         }
 
